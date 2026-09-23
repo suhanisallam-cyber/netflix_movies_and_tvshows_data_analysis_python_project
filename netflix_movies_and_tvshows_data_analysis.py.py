@@ -15,7 +15,7 @@ sns.set_theme(style="whitegrid")
 # STEP 2: Load the Dataset
 
 # Load the Netflix dataset CSV file downloaded from Kaggle
-df = pd.read_csv("netflix_titles.csv")
+df = pd.read_csv("netflix_titles_sample.csv")
 
 # Display the first 5 rows to inspect the data structure
 print("--- First 5 Rows ---")
@@ -31,28 +31,29 @@ print(df.info())
 print("\n--- Missing Values Count ---")
 print(df.isnull().sum())
 
-# Date format specify karke date_added convert karein
+# Specify the date format and convert the date_added column
 df["date_added"] = pd.to_datetime(df["date_added"].str.strip(), format="mixed")
 
-# Naya 'year_added' column
+# Create a new 'year_added' column
 df["year_added"] = df["date_added"].dt.year
 
-# inplace=True ki jagah direct assignment karein (Copy-on-Write warning fix)
+# Use direct assignment instead of inplace=True to fix the Copy-on-Write warning
 df["director"] = df["director"].fillna("Unknown")
 df["cast"] = df["cast"].fillna("Unknown")
 df["country"] = df["country"].fillna("Unknown")
+print(df.isnull().sum())
 
 
 # STEP 4: Analysis & Visualizations
 
 
-# 1. Count Plot: hue="type" add kiya warning remove karne ke liye
+# 1. Count Plot: Added hue="type" to remove the warning
 plt.figure(figsize=(6, 4))
 sns.countplot(data=df, x="type", hue="type", palette="Set2", legend=False)
 plt.title("Distribution of Movies vs TV Shows")
 plt.xlabel("Content Type")
 plt.ylabel("Total Count")
-# Figure save kar rahe hain (plt.show se pehle)
+# Save the figure before displaying it with plt.show()
 plt.savefig("movies_vs_tvshows.png", dpi=300, bbox_inches="tight")
 plt.show()
 
@@ -70,7 +71,7 @@ sns.barplot(
 plt.title("Top 10 Countries with Most Netflix Content")
 plt.xlabel("Number of Titles")
 plt.ylabel("Country")
-# Figure save kar rahe hain
+# Save the figure before displaying it with plt.show()
 plt.savefig("top_10_countries.png", dpi=300, bbox_inches="tight")
 plt.show()
 
@@ -81,6 +82,6 @@ content_by_year.plot(kind="line", figsize=(10, 5), marker="o")
 plt.title("Content Added on Netflix Over Time")
 plt.xlabel("Year Added")
 plt.ylabel("Number of Titles")
-# Figure save kar rahe hain
+# Save the figure before displaying it with plt.show()
 plt.savefig("content_addition_trend.png", dpi=300, bbox_inches="tight")
 plt.show()
